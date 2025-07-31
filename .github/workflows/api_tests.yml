@@ -24,8 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Pytest with Allure
-        run: pytest --alluredir=allure-results
+      - name: Run API tests with Pytest and Allure
+        run: pytest tests --alluredir=allure-results
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v3
