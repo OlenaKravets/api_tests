@@ -1,0 +1,1 @@
+{'title': 'My automated post', 'body': 'Post created via extended test', 'userId': 1, 'id': 101}
