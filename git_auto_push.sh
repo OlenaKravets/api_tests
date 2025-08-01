@@ -19,4 +19,3 @@ if [ $? -eq 0 ]; then
 else
     echo "❌ Помилка при пуші!"
 fi
-git reset
