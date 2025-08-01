@@ -10,44 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Завантажуємо код
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Встановлюємо Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.x'
 
-      # 3️⃣ Встановлюємо залежності
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install allure-pytest
 
-      # 4️⃣ Встановлюємо Allure CLI
+      - name: Run API tests with Pytest and Allure
+        run: pytest tests --alluredir=allure-results
+
       - name: Install Allure CLI
         run: |
+          sudo apt-add-repository ppa:qameta/allure -y
           sudo apt-get update
-          sudo apt-get install -y unzip wget
-          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
-          unzip allure-2.24.0.zip -d /opt/
-          sudo ln -s /opt/allure-2.24.0/bin/allure /usr/local/bin/allure
+          sudo apt-get install allure -y
 
-      # 5️⃣ Запускаємо тести з Allure
-      - name: Run API tests with Pytest and Allure
-        run: |
-          pytest tests --alluredir=allure-results
-
-      # 6️⃣ Генеруємо HTML звіт Allure
       - name: Generate Allure HTML report
         run: |
           mkdir -p allure-report
           allure generate allure-results -o allure-report --clean
 
-      # 7️⃣ Деплой звіту на GitHub Pages
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -56,6 +46,5 @@ jobs:
           publish_dir: ./allure-report
           keep_files: false
 
-      # 8️⃣ Виводимо посилання на звіт
       - name: Display report URL
-        run: echo "✅ Allure Report: https://olenakravets.github.io/api_tests/"
+        run: echo "✅ Allure Report will be available soon at: https://olenakravets.github.io/api_tests/"
