@@ -6,38 +6,49 @@ on:
       - main
 
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Клонуємо репозиторій
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2️⃣ Встановлюємо Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
+      # 3️⃣ Встановлюємо залежності
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install allure-pytest
 
+      # 4️⃣ Запускаємо тести з Allure
       - name: Run API tests with Pytest and Allure
-        run: pytest tests --alluredir=allure-results
+        run: |
+          pytest tests --alluredir=allure-results
 
+      # 5️⃣ Встановлюємо Allure CLI
       - name: Install Allure CLI
         run: |
-          sudo apt-add-repository ppa:qameta/allure -y
           sudo apt-get update
-          sudo apt-get install allure -y
+          sudo apt-get install -y openjdk-11-jre
+          wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
+          tar -zxvf allure-2.29.0.tgz
+          sudo mv allure-2.29.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
+      # 6️⃣ Генеруємо HTML звіт
       - name: Generate Allure HTML report
         run: |
           mkdir -p allure-report
           allure generate allure-results -o allure-report --clean
 
+      # 7️⃣ Деплоїмо Allure Report на GitHub Pages (gh-pages)
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -46,5 +57,7 @@ jobs:
           publish_dir: ./allure-report
           keep_files: false
 
+      # 8️⃣ Виводимо посилання на звіт
       - name: Display report URL
-        run: echo "✅ Allure Report will be available soon at: https://olenakravets.github.io/api_tests/"
+        run: |
+          echo "✅ Allure Report will be available soon at: https://olenakravets.github.io/api_tests/"
