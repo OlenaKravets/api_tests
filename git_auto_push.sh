@@ -1,25 +1,26 @@
 #!/bin/bash
+set -e
 
-echo "🔄 Очищаю можливі блокування Git..."
+echo "🔄 Очищаю попередні блокування Git..."
 rm -f .git/index.lock
 rm -f .git/refs/heads/main.lock
 rm -f .git/HEAD.lock
 
-echo "🔄 Додаю всі зміни..."
+echo "🧹 Очищаю кеш..."
+git gc --prune=now
+git fsck --full
+
+echo "➕ Додаю всі зміни..."
 git add -A
 
+# Створюємо коміт з часом
 commit_message="Auto commit on $(date '+%Y-%m-%d %H:%M:%S')"
 echo "💾 Створюю коміт: $commit_message"
-git commit -m "$commit_message"
+git commit -m "$commit_message" || echo "⚠️ Немає змін для коміту"
 
-echo "🚀 Виконую примусовий пуш у main..."
-git push origin main --force
+echo "🚀 Виконую пуш у main..."
+git push origin main --force || { echo "❌ Помилка пушу!"; exit 1; }
 
-if [ $? -eq 0 ]; then
-    echo "✅ Пуш виконано успішно!"
-    echo "⏳ Очікую генерацію Allure Report на GitHub Pages..."
-    echo "🌐 Звіт буде доступний приблизно через 1–2 хвилини за посиланням:"
-    echo "👉 https://olenakravets.github.io/api_tests/"
-else
-    echo "❌ Помилка під час пушу!"
-fi
+echo "✅ Пуш виконано успішно!"
+echo "⏳ Очікуйте 1-2 хвилини для генерації Allure Report..."
+echo "🌐 Звіт буде доступний тут: https://olenakravets.github.io/api_tests/"
