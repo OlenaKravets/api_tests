@@ -32,32 +32,4 @@ jobs:
         run: |
           pytest tests --alluredir=allure-results
 
-      # 5️⃣ Встановлюємо Allure CLI
-      - name: Install Allure CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jre
-          wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
-          tar -zxvf allure-2.29.0.tgz
-          sudo mv allure-2.29.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-
-      # 6️⃣ Генеруємо HTML звіт
-      - name: Generate Allure HTML report
-        run: |
-          mkdir -p allure-report
-          allure generate allure-results -o allure-report --clean
-
-      # 7️⃣ Деплоїмо Allure Report на GitHub Pages (gh-pages)
-      - name: Deploy Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./allure-report
-          keep_files: false
-
-      # 8️⃣ Виводимо посилання на звіт
-      - name: Display report URL
-        run: |
-          echo "✅ Allure Report will be available soon at: https://olenakravets.github.io/api_tests/"
+      # 5️⃣ Встановлюєм

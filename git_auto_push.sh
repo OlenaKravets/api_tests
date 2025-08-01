@@ -19,8 +19,4 @@ echo "💾 Створюю коміт: $commit_message"
 git commit -m "$commit_message" || echo "⚠️ Немає змін для коміту"
 
 echo "🚀 Виконую пуш у main..."
-git push origin main --force || { echo "❌ Помилка пушу!"; exit 1; }
-
-echo "✅ Пуш виконано успішно!"
-echo "⏳ Очікуйте 1-2 хвилини для генерації Allure Report..."
-echo "🌐 Звіт буде доступний тут: https://olenakravets.github.io/api_tests/"
+git push origin main --forc
