@@ -38,7 +38,7 @@ jobs:
           mkdir -p allure-report
           allure generate allure-results -o allure-report --clean
 
-      # 6️⃣ Деплой звіту на GitHub Pages (gh-pages branch)
+      # 6️⃣ Деплой звіту на GitHub Pages
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -49,4 +49,5 @@ jobs:
 
       # 7️⃣ Вивід посилання на звіт
       - name: Display report URL
-        run: echo "✅ Allure Report: https://olenakravets.github.io/api_tests/"
+        run: |
+          echo "✅ Allure Report: https://olenakravets.github.io/api_tests/"
