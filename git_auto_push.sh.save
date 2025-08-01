@@ -22,16 +22,5 @@ commit_message="Auto commit on $(date '+%Y-%m-%d %H:%M:%S')"
 echo "💾 Створюю коміт: $commit_message"
 git commit -m "$commit_message"
 
-# 5️⃣ Примусовий пуш у main
-echo "🚀 Виконую пуш у main..."
-git push origin main --force
 
-# 6️⃣ Перевірка статусу пушу
-if [ $? -eq 0 ]; then
-    echo "✅ Пуш виконано успішно!"
-    echo "⏳ Очікую генерацію Allure Report (GitHub Pages)..."
-    echo "🔗 Звіт буде доступний приблизно через 1-2 хвилини:"
-    echo "   👉 https://olenakravets.github.io/api_tests/"
-else
-    echo "❌ Помилка при пуші!"
-fi
+ 
